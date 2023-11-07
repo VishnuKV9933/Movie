@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 function Search() {
   const [searchText, setSearchText] = useState("");
   const [searchResuls, setSearchResults] = useState([]);
+  const [message,setMessage]=useState('')
 
   const search = async (e) => {
       try {
@@ -15,6 +16,14 @@ function Search() {
       const response = await axios.get(
         `${baseurl}/search/movie?api_key=${apikey}&query=${searchText}`
       );
+      if(response.data.results.length < 1){
+        setMessage('No data available')
+        setTimeout(() => {
+          setMessage('')
+          setSearchText('')
+        }, 2000);
+        return
+      }
       setSearchResults(response.data.results);
       setSearchText("");
     } catch (error) {
@@ -50,6 +59,8 @@ function Search() {
           </div>
         </form>
 
+        <div className=" flex justify-center text-red-600">{message}</div>
+
         {/* movie list */}
         <div className="sm:flex sm:flex-wrap sm:gap-6  justify-center ">
           {searchResuls.map((elem) => {
@@ -71,6 +82,10 @@ function Search() {
               </div>
             );
           })}
+          <div>
+            <div>Prev</div>
+            <div>Next</div>
+          </div>
         </div>
         {/* movie list end */}
       </div>
