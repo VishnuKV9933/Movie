@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 function Header() {
   const Navigate = useNavigate()
   return (
-    <div className="bg-black text-white font-sans h-[50px]">
+    <div className="bg-red-300 text-white font-sans items-center ">
     {/* Navigation Bar */}
-    <nav className="bg-black p-4">
+    <nav className="bg-black p-4  items-center">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
         <Link to="/">
