@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import "./Search.css";
 import axios from "axios";
 import { apikey, baseurl } from "../../Utility";
+import { Link } from "react-router-dom";
 
 function Search() {
   const [searchText, setSearchText] = useState("");
@@ -48,11 +49,14 @@ function Search() {
             return (
               <div key={elem.id}>
                 <div className="w-full my-1  p-10 sm:p-2  sm:w-[400px] lg:w-[300px] gap-2">
+                  <Link to={`/moviedetails/${elem.id}`}>
+
                   <img
                     className="sm:w-[100px] sm:h-[150px] "
                     src={`https://image.tmdb.org/t/p/original/${elem.poster_path}`}
                     alt="img "
                   />
+                  </Link>
                   <div className="text-white font-bold text-xl">
                     {elem.original_title}
                   </div>
