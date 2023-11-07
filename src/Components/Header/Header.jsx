@@ -1,9 +1,12 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useSelector ,useDispatch} from "react-redux";
+
 function Header() {
-  const Navigate = useNavigate()
+  const Notification = useSelector((state)=>state.movie)
+
   return (
-    <div className="bg-red-300 text-white font-sans items-center ">
+    <div className=" text-white font-sans items-center ">
     {/* Navigation Bar */}
     <nav className="bg-black p-4  items-center">
       <div className="container mx-auto flex justify-between items-center">
@@ -24,6 +27,13 @@ function Header() {
       </div>
     </nav>
     {/* Content goes here */}
+    <div className='bg-red-700 flex gap-1'>
+      {
+        Notification.error 
+   
+      }
+     
+    </div>
   </div>
   );
 }

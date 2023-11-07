@@ -10,23 +10,31 @@ function Search() {
   const [searchResuls, setSearchResults] = useState([]);
 
   const search = async (e) => {
-    e.preventDefault()
-    const response = await axios.get(
-      `${baseurl}/search/movie?api_key=${apikey}&query=${searchText}`
-    );
-    setSearchResults(response.data.results);
-    setSearchText('')
+      try {
+      e.preventDefault();
+      const response = await axios.get(
+        `${baseurl}/search/movie?api_key=${apikey}&query=${searchText}`
+      );
+      setSearchResults(response.data.results);
+      setSearchText("");
+    } catch (error) {
+      console.log(error);
+    }
+    };
+    
 
-  };
 
   return (
     <>
       <div className="search-body min-h-full bg-black">
         <Header />
-        <form onSubmit={search} className="flex items-center gap-1 md:gap-4 justify-center sm:mb-10">
+        <form
+          onSubmit={search}
+          className="flex items-center gap-1 md:gap-4 justify-center sm:mb-10"
+        >
           <div className="relative md:w-1/2">
             <input
-            value={searchText}
+              value={searchText}
               onChange={(event) => setSearchText(event.target.value)}
               type="text"
               placeholder="Search"
@@ -42,7 +50,6 @@ function Search() {
           </div>
         </form>
 
-        
         {/* movie list */}
         <div className="sm:flex sm:flex-wrap sm:gap-6  justify-center ">
           {searchResuls.map((elem) => {
@@ -50,12 +57,11 @@ function Search() {
               <div key={elem.id}>
                 <div className="w-full my-1  p-10 sm:p-2  sm:w-[400px] lg:w-[300px] gap-2">
                   <Link to={`/moviedetails/${elem.id}`}>
-
-                  <img
-                    className="sm:w-[100px] sm:h-[150px] "
-                    src={`https://image.tmdb.org/t/p/original/${elem.poster_path}`}
-                    alt="img "
-                  />
+                    <img
+                      className="sm:w-[100px] sm:h-[150px] "
+                      src={`https://image.tmdb.org/t/p/original/${elem.poster_path}`}
+                      alt="img "
+                    />
                   </Link>
                   <div className="text-white font-bold text-xl">
                     {elem.original_title}

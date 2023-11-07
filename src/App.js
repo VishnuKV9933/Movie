@@ -4,6 +4,7 @@ import Search from "./Components/Search/Search";
 import MovieDetail from "./Components/MovieDetails/MovieDetails";
 import Home from "./Components/Home/Home";
 
+
 function App() {
   return (
     <BrowserRouter>

@@ -4,13 +4,17 @@ import { apikey, baseurl } from "../../Utility";
 import axios from "axios";
 import MovieList from "../MovieList/MovieList";
 
+
+
 function Home() {
+
+   
+
   const [banner, setBanner] = useState(null);
 
   useEffect(() => {
     getBanner();
   }, []);
-  console.log(banner?.original_title, "fdgfdgf");
 
   const getBanner = async () => {
     let length;
