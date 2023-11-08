@@ -8,16 +8,14 @@ import { Link } from "react-router-dom";
 function Search() {
   const [searchText, setSearchText] = useState("");
   const [searchResuls, setSearchResults] = useState([]);
-  const [displayResult, setDisplayResult] = useState([])
-  const [message,setMessage]=useState('')
+  const [displayResult, setDisplayResult] = useState([]);
+  const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPage = Math.ceil(searchResuls?.length / 5);
-
-
+  const totalPage = Math.ceil(searchResuls?.length / 7);
 
   useEffect(() => {
-    const startIndex = (currentPage - 1) * 5;
-    const endIndex = startIndex + 5;
+    const startIndex = (currentPage - 1) * 7;
+    const endIndex = startIndex + 7;
     const data = searchResuls.slice(startIndex, endIndex);
     setDisplayResult(data);
   }, [currentPage, searchResuls]);
@@ -36,28 +34,26 @@ function Search() {
     handlePageChange(currentPage - 1);
   }
 
-
   const search = async (e) => {
-      try {
+    try {
       e.preventDefault();
       const response = await axios.get(
         `${baseurl}/search/movie?api_key=${apikey}&query=${searchText}`
       );
-      if(response.data.results.length < 1){
-        setMessage('No data available')
+      if (response.data.results.length < 1) {
+        setMessage("No data available");
         setTimeout(() => {
-          setMessage('')
-          setSearchText('')
+          setMessage("");
+          setSearchText("");
         }, 2000);
-        return
+        return;
       }
       setSearchResults(response.data.results);
       setSearchText("");
     } catch (error) {
       console.log(error);
     }
-    };
-
+  };
 
   return (
     <>
@@ -89,7 +85,6 @@ function Search() {
 
         {/* movie list */}
         <div className="sm:flex sm:flex-wrap sm:gap-6  justify-center ">
-        
           {displayResult.map((elem) => {
             return (
               <div key={elem.id}>
@@ -109,15 +104,31 @@ function Search() {
               </div>
             );
           })}
-          <div>
-           
+          <div></div>
+        </div>
+
+        {/* next and previous */}
+        {
+          (searchResuls.length>0) && <>
+           <div className="w-full flex gap-[100px] justify-center mt-5 bg-black ">
+          <div
+            className="text-white p-1 bg-red-500 rounded-lg mb-5 cursor-pointer"
+            onClick={previous}
+          >
+            Prev
+          </div>
+          <div
+            className="text-white p-1 bg-red-500 rounded-lg mb-5 cursor-pointer"
+            onClick={next}
+          >
+            Next
           </div>
         </div>
-        <div className="w-full flex gap-[100px] justify-center mt-5 bg-black ">
-        <div className="text-white p-1 bg-red-500 rounded-lg mb-5 cursor-pointer" onClick={previous}>Prev</div>
-            <div className="text-white p-1 bg-red-500 rounded-lg mb-5 cursor-pointer"  onClick={next}>Next</div>
-
-        </div>
+          </>
+        }
+        {/* next and previous end */}
+        
+       
         {/* movie list end */}
       </div>
     </>
