@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import "./Search.css";
 import axios from "axios";
@@ -8,7 +8,34 @@ import { Link } from "react-router-dom";
 function Search() {
   const [searchText, setSearchText] = useState("");
   const [searchResuls, setSearchResults] = useState([]);
+  const [displayResult, setDisplayResult] = useState([])
   const [message,setMessage]=useState('')
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPage = Math.ceil(searchResuls?.length / 5);
+
+
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * 5;
+    const endIndex = startIndex + 5;
+    const data = searchResuls.slice(startIndex, endIndex);
+    setDisplayResult(data);
+  }, [currentPage, searchResuls]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  function next() {
+    if (currentPage === totalPage) return;
+    handlePageChange(currentPage + 1);
+  }
+
+  function previous() {
+    if (currentPage === 1) return;
+    handlePageChange(currentPage - 1);
+  }
+
 
   const search = async (e) => {
       try {
@@ -30,7 +57,6 @@ function Search() {
       console.log(error);
     }
     };
-    
 
 
   return (
@@ -63,7 +89,8 @@ function Search() {
 
         {/* movie list */}
         <div className="sm:flex sm:flex-wrap sm:gap-6  justify-center ">
-          {searchResuls.map((elem) => {
+        
+          {displayResult.map((elem) => {
             return (
               <div key={elem.id}>
                 <div className="w-full my-1  p-10 sm:p-2  sm:w-[400px] lg:w-[300px] gap-2">
@@ -83,9 +110,13 @@ function Search() {
             );
           })}
           <div>
-            <div>Prev</div>
-            <div>Next</div>
+           
           </div>
+        </div>
+        <div className="w-full flex gap-[100px] justify-center mt-5 bg-black ">
+        <div className="text-white p-1 bg-red-500 rounded-lg mb-5 cursor-pointer" onClick={previous}>Prev</div>
+            <div className="text-white p-1 bg-red-500 rounded-lg mb-5 cursor-pointer"  onClick={next}>Next</div>
+
         </div>
         {/* movie list end */}
       </div>
